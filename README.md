@@ -1,2 +1,2 @@
-# Sentinel-Downloas
+# Sentinel-Download
 code to download Sentinel images
