@@ -11,7 +11,7 @@ import os
 API_USER = os.getenv('API_USER')
 API_PASSWORD =  os.environ.get('API_PASSWORD')
 
-FOOTPRINT_PATH = 'mulde.json'
+FOOTPRINT_PATH = 'dependencies/mulde.json'
 
 
 def api_connect(user, pasw, scihuburl = 'https://scihub.copernicus.eu/dhus'):  #/apihub/   /dhus
