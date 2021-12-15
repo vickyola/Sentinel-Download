@@ -3,10 +3,7 @@ from sentinelsat import read_geojson
 from sentinelsat import geojson_to_wkt
 from datetime import date
 import pandas as pd
-
-
 import csv
-
 from zipfile import ZipFile
 import os
 
