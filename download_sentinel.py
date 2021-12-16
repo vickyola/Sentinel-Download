@@ -12,11 +12,14 @@ API_USER = os.getenv('API_USER')
 API_PASSWORD =  os.environ.get('API_PASSWORD')
 #change path for files
 
+<<<<<<< HEAD
 
 #os.chdir("C:\\Users\\wittekii\\Documents\\GitHub")
 
 
 FOOTPRINT_PATH = 'Sentinel-Download/dependencies/mulde.json'
+=======
+>>>>>>> 73808a7730d672b85c69de397885004d3a622d96
 
 
 def api_connect(user, pasw, scihuburl = 'https://scihub.copernicus.eu/dhus'):  #/apihub/   /dhus
