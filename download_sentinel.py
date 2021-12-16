@@ -10,8 +10,13 @@ import os
 #run sentenv or enter username and pw here
 API_USER = os.getenv('API_USER')
 API_PASSWORD =  os.environ.get('API_PASSWORD')
+#change path for files
 
-FOOTPRINT_PATH = 'mulde.json'
+
+#os.chdir("C:\\Users\\wittekii\\Documents\\GitHub")
+
+
+FOOTPRINT_PATH = 'Sentinel-Download/dependencies/mulde.json'
 
 
 def api_connect(user, pasw, scihuburl = 'https://scihub.copernicus.eu/dhus'):  #/apihub/   /dhus
@@ -34,9 +39,6 @@ def sort_product(df):
     df_sorted = df.sort_values(['cloudcoverpercentage'], ascending=[True])#was bedeuted das? ingestiondate = Aufnahmedatum
    # df_sorted = df_sorted.head(1)  #head(1)  erste Reihe?
     return(df_sorted)
-
-
-
 
 
 #put some querydata in Excelsheet (for a year) 
@@ -99,8 +101,14 @@ def datainfo(api,product):
 # Returns name of file.
 def download_product(api, product):
     product_name = str(product['title'][0]) + '.zip'
+    
+    #here path filter
+    #path_filter = make_path_filter("*s1?-ew[12]-slc-hh-*.tiff")
+
+    #api.download_all(<products>, nodefilter=path_filter)
     if not os.path.exists(product_name):#.os
         api.download_all(product.index) #what mean .index?
+        
     return(product_name)
     
  #   '''
@@ -129,20 +137,13 @@ def main():
     product_num(api , footprint,  (str(year)+'0101',str(year)+'1231') )
      
      # -> df of products 
-    
-   # print(   name_product(api, product))
-    #attributes for filtering
-   
-    
+ 
     
     query= querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
     
     
     #overview:
     # odata =datainfo(api,product)  #odata of product as excelsheet dicto
-    
-    #print(list(odata.keys()))
-   
      
    # print(list(product.keys()))   #for filtering? put in list?
 ''' 

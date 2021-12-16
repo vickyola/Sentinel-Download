@@ -5,6 +5,5 @@
 #SBATCH --output=/work/%u/%x-%j.out
 #SBATCH --time=0-00:01:00   
 
-
 python download_sentinel.py
 
