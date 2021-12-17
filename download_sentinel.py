@@ -1,4 +1,4 @@
-from sentinelsat import SentinelAPI
+from sentinelsat import SentinelAPI, make_path_filter 
 from sentinelsat import read_geojson
 from sentinelsat import geojson_to_wkt
 from datetime import date
@@ -40,16 +40,7 @@ def querydata(api, footprint, date,year, platformname = 'Sentinel-2', cloudcover
     return(query)
 
 
-def name_product(api, product):
-    data_list= list()
-    #for i in range(0,len(product.index)):
-    for i in range(0,len(product)):
-        product_name = str(product['title'][i])# + '.zip'
-        data_list.append(product_name)
-   
-       # api.is_online(product_name)   
-    return(data_list)
-    
+
 def datainfo(api,product):
     dicto = dict()
     for i in range(0,len(product)):
@@ -72,15 +63,18 @@ def datainfo(api,product):
 # Checks if compressed product exists. 
 # If not, downloads it. 
 # Returns name of file.
-def download_product(api, product):
-    product_name = str(product['title'][0]) + '.zip'
-    
-    #here path filter- check whether it work for Sentinel2!!
-    #path_filter = make_path_filter("*s1?-ew[12]-slc-hh-*.tiff")
 
+def first_product_inlist(df):
+	df_sorted = df.head(1)
+	return(df_sorted)
+
+def download_product(api, product):
+    product_name = str(product['title'][0]) + '.zip'    
+    #here path filter- check whether it work for Sentinel2!!
+    path_filter = make_path_filter("*TCI*", exclude=False)
     #api.download_all(<products>, nodefilter=path_filter)
     if not os.path.exists(product_name):#.os
-        api.download_all(product.index) #what mean .index?        
+        api.download_all(product.index, nodefilter=path_filter) #what mean .index?        
     return(product_name)
     
  #   '''
@@ -89,22 +83,12 @@ def main():
     api = api_connect(API_USER, API_PASSWORD) 
     year  =  2020
     footprint = geojson_to_wkt(read_geojson(FOOTPRINT_PATH)) 
-     # products = api_query(api , footprint,(str(year)+'0101',str(year)+'1231') )
-   # product= sort_product(products)
-        
-    #number of productin in timespan
-    product_num(api , footprint,  (str(year)+'0101',str(year)+'1231') )
     query= querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
-    
-    #overview:
-    # odata =datainfo(api,product)  #odata of product as excelsheet dicto
-    # print(list(product.keys()))   #for filtering? put in list?
-''' 
-   product_name = download_product(api, product) #just table in zipfile not downlload to see how many pictures
+    product= first_product_inlist(query)
+    product_name = download_product(api, product) #
     zipfile = ZipFile(product_name, 'r')    
     zipfile.extractall(r'data_sentinel')
     zipfile.close()
-'''
 if __name__ == "__main__":
 	main()
     
