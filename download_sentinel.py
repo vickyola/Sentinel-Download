@@ -12,15 +12,13 @@ API_USER = os.getenv('API_USER')
 API_PASSWORD =  os.environ.get('API_PASSWORD')
 #change path for files
 
-<<<<<<< HEAD
-
-#os.chdir("C:\\Users\\wittekii\\Documents\\GitHub")
 
 
-FOOTPRINT_PATH = 'Sentinel-Download/dependencies/mulde.json'
-=======
->>>>>>> 73808a7730d672b85c69de397885004d3a622d96
 
+#FOOTPRINT_PATH = 'Sentinel-Download/dependencies/mulde.json'
+FOOTPRINT_PATH = 'C:\\Users\\wittekii\\Documents\GitHub\Sentinel-Download\dependencies\mulde.json'
+
+os.chdir("C:\\Users\\wittekii\\Documents\\GitHub")
 
 def api_connect(user, pasw, scihuburl = 'https://scihub.copernicus.eu/dhus'):  #/apihub/   /dhus
 	api = SentinelAPI(user, pasw, scihuburl)
@@ -37,11 +35,12 @@ def api_query(api, footprint, date, platformname = 'Sentinel-2', cloudcoverperce
 
 
 	
-#  sort values and takes latest???
-def sort_product(df):
-    df_sorted = df.sort_values(['cloudcoverpercentage'], ascending=[True])#was bedeuted das? ingestiondate = Aufnahmedatum
-   # df_sorted = df_sorted.head(1)  #head(1)  erste Reihe?
-    return(df_sorted)
+#check whether 1C is same than 2A
+def checkdobble(df):
+    df.sort_values('processinglevel')
+    df_checked =df.drop_duplicates(subset=['beginposition', 'tileid'], keep='first')
+    
+    return(df_checked)
 
 
 #put some querydata in Excelsheet (for a year) 
@@ -55,6 +54,9 @@ def querydata(api, footprint, date,year, platformname = 'Sentinel-2', cloudcover
     query = query.sort_values(['cloudcoverpercentage'], ascending=[True])
     query =query[['title','beginposition','processinglevel','tileid', 'cloudcoverpercentage']]#,'uuid']]
     query['tileid'].fillna((query['title'].str[39:44]), inplace=True) #get tileid from title
+    query=query.sort_values(by='processinglevel', ascending=False)
+    query =query.drop_duplicates(subset=['beginposition', 'tileid'], keep='first')
+    
     
     query.to_excel('querydata.xlsx', sheet_name= str(year))
     #return(query)
@@ -93,11 +95,7 @@ def datainfo(api,product):
     df.to_excel('dicto.xlsx')#,  sheet_name =datename )
   #  '''
     return(odata)
-                
-                   
-        
-        
- 
+
 #'''   
 # Checks if compressed product exists. 
 # If not, downloads it. 
