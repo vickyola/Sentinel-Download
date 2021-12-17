@@ -14,6 +14,13 @@ API_PASSWORD =  os.environ.get('API_PASSWORD')
 
 
 
+#os.chdir("C:\\Users\\wittekii\\Documents\\GitHub")
+
+
+
+#FOOTPRINT_PATH = 'dependencies/mulde.json'
+
+
 
 #FOOTPRINT_PATH = 'Sentinel-Download/dependencies/mulde.json'
 FOOTPRINT_PATH = 'C:\\Users\\wittekii\\Documents\GitHub\Sentinel-Download\dependencies\mulde.json'
@@ -32,15 +39,6 @@ def api_query(api, footprint, date, platformname = 'Sentinel-2', cloudcoverperce
     query =api.to_dataframe(query)
   #  query = query[['title','beginposition','processinglevel','tileid','size', 'cloudcoverpercentage','uuid']]
     return(query)
-
-
-	
-#check whether 1C is same than 2A
-def checkdobble(df):
-    df.sort_values('processinglevel')
-    df_checked =df.drop_duplicates(subset=['beginposition', 'tileid'], keep='first')
-    
-    return(df_checked)
 
 
 #put some querydata in Excelsheet (for a year) 
