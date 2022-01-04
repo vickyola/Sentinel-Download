@@ -13,8 +13,8 @@ from zipfile import ZipFile
 API_USER = os.getenv('API_USER')
 API_PASSWORD =  os.environ.get('API_PASSWORD')
 #change path for files
-FOOTPRINT_PATH = 'C:\\Users\\wittekii\\Documents\GitHub\Sentinel-Download\dependencies\mulde.json'
-#FOOTPRINT_PATH = 'dependencies/mulde.json'
+#FOOTPRINT_PATH = 'C:\\Users\\wittekii\\Documents\GitHub\Sentinel-Download\dependencies\mulde.json'
+FOOTPRINT_PATH = 'dependencies/mulde.json'
 #FOOTPRINT_PATH = 'Sentinel-Download/dependencies/mulde.json'
 #os.chdir("C:\\Users\\wittekii\\Documents\\GitHub")
 #dire = "C:\\Users\\wittekii\\Documents\\GitHub"
