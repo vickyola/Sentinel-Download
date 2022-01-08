@@ -41,9 +41,9 @@ def first_product_inlist(df):
 
 def download_product(api, product, year):
     product_name =  str(product['title'][0]) + '.zip'  #'downloads/' + str(year) +'/'+
-    #print(type(product_name ))
-  #  if not os.path.exists(product_name ):#.os
-   #     api.download_all(product.index, directory_path = 'downloads/' + year ) #what mean .index?
+   
+    if not os.path.exists(product_name ):#.os
+        api.download_all(product.index, directory_path = 'downloads/' + year ) #what mean .index?
    
     return(product_name)
 
@@ -60,13 +60,13 @@ def extract_images(product, year):
 
 def main():
     api = api_connect(API_USER, API_PASSWORD) 
-    year  =  2016
+    year  =  2017
     
     footprint = geojson_to_wkt(read_geojson(FOOTPRINT_PATH)) 
     query= querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
     #product= first_product_inlist(query)#dont use if all and change query to product
     product_name = download_product(api, query, str(year)) #just table in zipfile not downlload to see how many pictures
-    return(extract_images(query , str(year)))
+   # return(extract_images(query , str(year)))  #das geht irgendwie nicht, wird nur eins extrahiert kp warum
 if __name__ == "__main__":
 	main()
     
