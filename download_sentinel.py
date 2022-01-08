@@ -41,13 +41,14 @@ def first_product_inlist(df):
 
 def download_product(api, product, year):
     product_name =  str(product['title'][0]) + '.zip'  #'downloads/' + str(year) +'/'+
-    #print(product_name )
-    if not os.path.exists(product_name ):#.os
-        api.download_all(product.index, directory_path = 'downloads/' + year ) #what mean .index?
+    #print(type(product_name ))
+  #  if not os.path.exists(product_name ):#.os
+   #     api.download_all(product.index, directory_path = 'downloads/' + year ) #what mean .index?
    
     return(product_name)
 
-def extract_images(productname, year):
+def extract_images(product, year):
+    productname =  str(product['title'][0]) + '.zip'  #'downloads/' + str(year) +'/'+
     directory_path = 'downloads/' + year +'/' + productname 
     archive = ZipFile(directory_path, 'r')
     
@@ -63,12 +64,9 @@ def main():
     
     footprint = geojson_to_wkt(read_geojson(FOOTPRINT_PATH)) 
     query= querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
-    #product= first_product_inlist(query)#weglassen wenn alle
+    #product= first_product_inlist(query)#dont use if all and change query to product
     product_name = download_product(api, query, str(year)) #just table in zipfile not downlload to see how many pictures
-    return(extract_images(product_name , str(year)))
-    #zipfile = ZipFile(product_name, 'r')    
-   # zipfile.extractall(r'data_sentinel')
-    #zipfile.close()    
+    return(extract_images(query , str(year)))
 if __name__ == "__main__":
 	main()
     
