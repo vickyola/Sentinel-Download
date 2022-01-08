@@ -7,7 +7,7 @@ set year 2016 -2021
 
 
 # todo
--rewrite shell script 
+-unpack imag data
 
 -think about folder structure (what to download, where? )
 
