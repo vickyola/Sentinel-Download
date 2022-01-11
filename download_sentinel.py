@@ -11,12 +11,8 @@ from zipfile import ZipFile
 #run sentenv or enter username and pw here
 API_USER = os.getenv('API_USER')
 API_PASSWORD =  os.environ.get('API_PASSWORD')
-#change path for files
-#FOOTPRINT_PATH = 'C:\\Users\\wittekii\\Documents\GitHub\Sentinel-Download\dependencies\mulde.json'
 FOOTPRINT_PATH = 'dependencies/mulde.json'
-#FOOTPRINT_PATH = 'Sentinel-Download/dependencies/mulde.json'
-#os.chdir("C:\\Users\\wittekii\\Documents\\GitHub")
-#dire = "C:\\Users\\wittekii\\Documents\\GitHub"
+
 
 def api_connect(user, pasw, scihuburl = 'https://scihub.copernicus.eu/dhus'):  
 	api = SentinelAPI(user, pasw, scihuburl)
@@ -36,43 +32,40 @@ def querydata(api, footprint, date, year, platformname = 'Sentinel-2', cloudcove
     return(query)
 
 def first_product_inlist(df):
-	df_sorted = df.head(1)
+	df_sorted = df.head(2)
 	return(df_sorted)
 
-def download_product(api, product, year):
-    product_name =  str(product['title'][0]) + '.zip'  #'downloads/' + str(year) +'/'+
-   
-    if not os.path.exists(product_name ):#.os
-        api.download_all(product.index, directory_path = 'downloads/' + year ) #what mean .index?
-   
-    return(product_name)
+def download_product(api, product, product_name_list, year):
 
-def extract_images(product, year):
-    productname =  str(product['title'][0]) + '.zip'  #'downloads/' + str(year) +'/'+
-    directory_path = 'downloads/' + year +'/' + productname 
-    archive = ZipFile(directory_path, 'r')
+    for index in product.index:
+        product_name =  str(product['title'][index]) + '.zip' 
+        if not os.path.exists(product_name ):#.os 
+            api.download_all(product.index, directory_path = 'downloads/' + year ) 
+        product_name_list.append(product_name)
     
-   # print(archive.namelist())
-    for file in archive.namelist():
-        if 'IMG_DATA' in file:
-           # print(file)
-            archive.extract(file, year + '_Images')
+    
+def extract_images(productname, year):
+    #productname =  str(product['title'][0]) + '.zip'  #'downloads/' + str(year) +'/'+
+    for i in productname:
+        directory_path = 'downloads/' + year +'/' + str(i)
+        archive = ZipFile(directory_path, 'r')#open ZipFile
+        for file in archive.namelist():
+            if 'IMG_DATA' in file:
+                archive.extract(file, year + '_Images')
+    
 
 def main():
     api = api_connect(API_USER, API_PASSWORD) 
     year  =  2017
     
     footprint = geojson_to_wkt(read_geojson(FOOTPRINT_PATH)) 
-    query= querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
-    #product= first_product_inlist(query)#dont use if all and change query to product
-    product_name = download_product(api, query, str(year)) #just table in zipfile not downlload to see how many pictures
-   # return(extract_images(query , str(year)))  #das geht irgendwie nicht, wird nur eins extrahiert kp warum
+    product = querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
+    #product = first_product_inlist(query)#dont use if all and change query to product
+    product_name_list = list()
+    product_name = download_product(api, product,product_name_list, str(year)) #just table in zipfile not downlload to see how many pictures
+
+    return(extract_images(product_name_list , str(year)))  #das geht irgendwie nicht, wird nur eins extrahiert kp warum
 if __name__ == "__main__":
 	main()
     
 
-
-#todo check whether zip is working
-#download whole product 
-#unpack?
-#extract images with glob
