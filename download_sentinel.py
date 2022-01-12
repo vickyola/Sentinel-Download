@@ -38,16 +38,16 @@ def first_product_inlist(df):
 def download_product(api, product, product_name_list, year):
     for index in product.index:
         product_name =  str(product['title'][index]) + '.zip' 
-     #   if not os.path.exists(product_name ):#.os 
-      #      api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) 
+        if not os.path.exists(product_name ):#.os 
+            api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) 
         product_name_list.append(product_name)
     
     
 def extract_images(productname, year):
     #productname =  str(product['title'][0]) + '.zip'  #'downloads/' + str(year) +'/'+
     for i in productname:
-        #directory_path = '/work/wittekii/sentinel/' + year +'/' + str(i)
-        directory_path = 'downloads/' + year +'/' + str(i)
+        directory_path = '/work/wittekii/sentinel/' + year +'/' + str(i)
+        #directory_path = 'downloads/' + year +'/' + str(i)
         archive = ZipFile(directory_path, 'r')#open ZipFile
         for file in archive.namelist():
             if 'IMG_DATA' in file:
