@@ -56,7 +56,7 @@ def extract_images(productname, year):
 
 def main():
     api = api_connect(API_USER, API_PASSWORD) 
-    year  =  2016
+    year  =  2017
     
     footprint = geojson_to_wkt(read_geojson(FOOTPRINT_PATH)) 
     product = querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
