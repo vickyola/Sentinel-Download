@@ -44,14 +44,13 @@ def download_product(api, product, product_name_list, year):
     
     
 def extract_images(productname, year):
-    #productname =  str(product['title'][0]) + '.zip'  #'downloads/' + str(year) +'/'+
     for i in productname:
         directory_path = '/work/wittekii/sentinel/' + year +'/' + str(i)
-        #directory_path = 'downloads/' + year +'/' + str(i)
-        archive = ZipFile(directory_path, 'r')#open ZipFile
-        for file in archive.namelist():
-            if 'IMG_DATA' in file:
-                archive.extract(file, '/work/wittekii/images/'+ year + '_Images')
+        if os.path.exists(directory_path):
+            archive = ZipFile(directory_path, 'r')#open ZipFile
+            for file in archive.namelist():
+                if 'IMG_DATA' in file:
+                    archive.extract(file, '/work/wittekii/images/'+ year + '_Images')
     
 
 def main():
