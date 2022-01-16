@@ -38,8 +38,8 @@ def first_product_inlist(df):
 def download_product(api, product, product_name_list, year):
     for index in product.index:
         product_name =  str(product['title'][index]) + '.zip' 
-       # if not os.path.exists(product_name ):#.os 
-       #     api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) 
+        if not os.path.exists(product_name ):#.os 
+            api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) 
         product_name_list.append(product_name)
     
     
@@ -55,7 +55,7 @@ def extract_images(productname, year):
 
 def main():
     api = api_connect(API_USER, API_PASSWORD) 
-    year  =  2019
+    year  =  2020
     
     footprint = geojson_to_wkt(read_geojson(FOOTPRINT_PATH)) 
     product = querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
