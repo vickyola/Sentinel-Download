@@ -38,8 +38,8 @@ def first_product_inlist(df):
 def download_product(api, product, product_name_list, year):
     for index in product.index:
         product_name =  str(product['title'][index]) + '.zip' 
-        if not os.path.exists(product_name ):#.os 
-            api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) 
+       # if not os.path.exists(product_name ):#.os 
+       #     api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) 
         product_name_list.append(product_name)
     
     
