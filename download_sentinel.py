@@ -24,22 +24,19 @@ def querydata(api, footprint, date, year, platformname = 'Sentinel-2', cloudcove
 					  platformname = platformname,
 					  cloudcoverpercentage = cloudcoverpercentage)
     query = api.to_dataframe(query)
-    query = query[['title','beginposition','processinglevel','tileid', 'cloudcoverpercentage']]#,'uuid']]
-    query['tileid'].fillna((query['title'].str[39:44]), inplace=True) #get tileid 
-    query=query.sort_values(by='processinglevel', ascending=False)
-    query =query.drop_duplicates(subset=['beginposition', 'tileid'], keep='first')
-    #query.to_excel('querydata.xlsx', sheet_name= str(year))
+    query = query[['title','beginposition','processinglevel','tileid', 'cloudcoverpercentage']] #what information will be in the Excelsheet
+    query['tileid'].fillna((query['title'].str[39:44]), inplace=True) #get missing tileid from title
+    query=query.sort_values(by='processinglevel', ascending=False)#sort! Level-2A will come first and will rather be downloaded
+    query =query.drop_duplicates(subset=['beginposition', 'tileid'], keep='first')# dublictes will be removed 
+    #query.to_excel('querydata.xlsx', sheet_name= str(year))  #creates Excelsheet
     return(query)
 
-def first_product_inlist(df):
-	df_sorted = df.head(2)
-	return(df_sorted)
-
+#download products and appends product name to list
 def download_product(api, product, product_name_list, year):
     for index in product.index:
         product_name =  str(product['title'][index]) + '.zip' 
-       # if not os.path.exists(product_name ):#.os 
-        #    api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) 
+        if not os.path.exists(product_name ):#
+            api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) #set dowload directory to work to avoid quota warnings
         product_name_list.append(product_name)
     
     
@@ -59,11 +56,9 @@ def main():
     
     footprint = geojson_to_wkt(read_geojson(FOOTPRINT_PATH)) 
     product = querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
-    #product = first_product_inlist(query)#dont use if all and change query to product
-    product_name_list = list()
-    product_name = download_product(api, product,product_name_list, str(year)) #just table in zipfile not downlload to see how many pictures
-
-    return(extract_images(product_name_list , str(year)))  #das geht irgendwie nicht, wird nur eins extrahiert kp warum
+    product_name_list = list() 
+    product_name = download_product(api, product,product_name_list, str(year)) 
+    return(extract_images(product_name_list , str(year)))  
 if __name__ == "__main__":
 	main()
     
