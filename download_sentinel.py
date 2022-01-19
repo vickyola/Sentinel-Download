@@ -1,11 +1,7 @@
-from sentinelsat import SentinelAPI, make_path_filter 
+from sentinelsat import SentinelAPI
 from sentinelsat import read_geojson
 from sentinelsat import geojson_to_wkt
-#import pandas as pd
 import os
-import glob
-#from os import path
-#from os import getenv
 from zipfile import ZipFile
 
 #run sentenv or enter username and pw here
@@ -39,7 +35,7 @@ def download_product(api, product, product_name_list, year):
             api.download_all(product.index, directory_path = '/work/wittekii/sentinel/' + year ) #set dowload directory to work to avoid quota warnings
         product_name_list.append(product_name)
     
-    
+#extract images from product in new directory    
 def extract_images(productname, year):
     for i in productname:
         directory_path = '/work/wittekii/sentinel/' + year +'/' + str(i)
@@ -52,7 +48,7 @@ def extract_images(productname, year):
 
 def main():
     api = api_connect(API_USER, API_PASSWORD) 
-    year  =  2021
+    year  =  2021 #set year
     
     footprint = geojson_to_wkt(read_geojson(FOOTPRINT_PATH)) 
     product = querydata(api , footprint,(str(year)+'0101',str(year)+'1231'), year = str(year)) #querydata in excelshet
