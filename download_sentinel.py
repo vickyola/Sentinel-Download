@@ -4,7 +4,7 @@ from sentinelsat import geojson_to_wkt
 import os
 from zipfile import ZipFile
 
-#run sentenv or enter username and pw here
+# enter username and pw here or set as variables in cli (see workflow)
 API_USER = os.getenv('API_USER')
 API_PASSWORD =  os.environ.get('API_PASSWORD')
 FOOTPRINT_PATH = 'dependencies/mulde.json'
