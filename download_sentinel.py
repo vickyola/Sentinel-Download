@@ -2,6 +2,7 @@ from sentinelsat import SentinelAPI
 from sentinelsat import read_geojson
 from sentinelsat import geojson_to_wkt
 import os
+
 from zipfile import ZipFile
 
 # enter username and pw here or set as variables in cli (see workflow)
